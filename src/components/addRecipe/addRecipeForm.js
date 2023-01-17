@@ -8,9 +8,9 @@ import { Dialog,
          DialogContent, 
          DialogActions, 
          Button,
-         TextField, 
-         CircularProgress,
+         TextField,
          Alert} from "@mui/material";
+import Spinner from "../spinner/spinner";
 
 export default function AddRecipeForm({open, setOpen, setShowSuccessAlert, setShowErrorAlert}) {
     const [url, setUrl] = useState('');
@@ -45,17 +45,18 @@ export default function AddRecipeForm({open, setOpen, setShowSuccessAlert, setSh
         }
     }
 
-    let urlFormDialogContent = (<><DialogTitle id="alert-dialog-title">
+    let urlFormDialogContent = (<>
+            <DialogTitle id="alert-dialog-title">
                 {"Add recipe"}
               </DialogTitle>
               <DialogContent>
-                {isFetching ? <CircularProgress /> : <TextField 
+                 <TextField 
                         fullWidth
                         placeholder='Enter recipe url'
                         id='add-recipe' 
                         onChange={e => setUrl(e.target.value)} 
                         value={url}>
-                    </TextField>}
+                    </TextField>
                     {error && <Alert severity="error">Url cannot be empty</Alert>}
               </DialogContent>
               <br />
@@ -63,7 +64,8 @@ export default function AddRecipeForm({open, setOpen, setShowSuccessAlert, setSh
               <DialogActions>
                 <Button variant="contained" color="error" onClick={() => setOpen(false)}>Cancel</Button>
                 <Button variant="contained" color="primary" onClick={() => validateInput(url)} >Submit</Button>
-              </DialogActions></>)
+              </DialogActions>
+              </>)
 
     let content;
     const formattedDate = new Date().toLocaleString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric", hour:"numeric", minute:"numeric"}).toString(); 
@@ -74,7 +76,9 @@ export default function AddRecipeForm({open, setOpen, setShowSuccessAlert, setSh
               onClose={() => setOpen(false)}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description">
-              {recipe === undefined ? urlFormDialogContent : 
+              {recipe === undefined ? 
+                isFetching ? <Spinner /> : 
+                    urlFormDialogContent : 
                 <PopulatedAddRecipeForm recipe={{
                     title: recipe.title,
                     category: recipe.category,

@@ -20,12 +20,10 @@ export const addRecipe = async ({newRecipe}) => {
 };
 
 export const updateRecipe = async ({newRecipe}) => {
-    console.log(newRecipe)
     return await recipesApi.put(`/recipes`, newRecipe);
 };
 
 export const deleteRecipe = async (id) => {
-    console.log(id)
     return await recipesApi.delete(`/recipes/${id}`, id);
 };
 
